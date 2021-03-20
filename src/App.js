@@ -1,6 +1,7 @@
 import React from 'react';
 import MyAppBar from './MyAppBar';
-import MyContent from './MyContent';
+// import MyContent from './MyContent';
+import Countries from './Countries';
 
 class App extends React.Component {
 	render() {
@@ -8,7 +9,7 @@ class App extends React.Component {
 			<div>
 				<MyAppBar />
 				<br />
-				<MyContent />
+				<Countries />
 			</div>
 		);
 	}
