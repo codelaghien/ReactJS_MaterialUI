@@ -35,8 +35,9 @@ class ComboCountries extends React.Component {
 	}
 
 	handleChange = (event) => {
-		console.log('chọn: ', event.target.value);
+		console.log('ComboCountries chọn: ', event.target.value);
 		this.setState({ selectedCountry: event.target.value });
+		this.props.handleChange(event.target.value);
 	};
 
 	getData = () => {
@@ -52,6 +53,7 @@ class ComboCountries extends React.Component {
 					);
 					// console.log('dataWithId', dataWithId);
 					this.setState({ rows: dataWithId });
+					this.props.totalCountries(dataWithId.length);
 				},
 				(error) => {
 					console.log('error', error);
@@ -78,7 +80,7 @@ class ComboCountries extends React.Component {
 					>
 						{this.state.rows.map((value, index) => {
 							return (
-								<MenuItem value={value.Country}>
+								<MenuItem key={index} value={value.Country}>
 									{value.Country}
 								</MenuItem>
 							);

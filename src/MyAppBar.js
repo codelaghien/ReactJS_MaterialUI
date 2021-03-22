@@ -12,10 +12,10 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+// import NotificationsIcon from '@material-ui/icons/Notifications';
+import EmojiFlagsIcon from '@material-ui/icons/EmojiFlags';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import ComboCountries from './ComboCountries';
-import ComboCountries2 from './ComboCountries2';
 
 const useStyles = makeStyles((theme) => ({
 	grow: {
@@ -81,7 +81,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function MyContent() {
+export default function MyAppBar() {
+	const [countries, setTotalCountries] = React.useState(0);
 	const classes = useStyles();
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -104,6 +105,16 @@ export default function MyContent() {
 
 	const handleMobileMenuOpen = (event) => {
 		setMobileMoreAnchorEl(event.currentTarget);
+	};
+
+	const handleChange = (country) => {
+		console.log('MyAppBar chọn: ', country);
+		// this.setState({ selectedCountry: country });
+	};
+
+	const totalCountries = (totalCountries) => {
+		setTotalCountries(totalCountries);
+		console.log('MyAppBar totalCountries: ', totalCountries);
 	};
 
 	const menuId = 'primary-search-account-menu';
@@ -147,7 +158,7 @@ export default function MyContent() {
 					color='inherit'
 				>
 					<Badge badgeContent={11} color='secondary'>
-						<NotificationsIcon />
+						<EmojiFlagsIcon />
 					</Badge>
 				</IconButton>
 				<p>Notifications</p>
@@ -196,8 +207,11 @@ export default function MyContent() {
 					</div>
 					<div className={classes.grow} />
 					<div className={classes.sectionDesktop}>
-						<ComboCountries />
-						<IconButton
+						<ComboCountries
+							handleChange={handleChange}
+							totalCountries={totalCountries}
+						/>
+						{/* <IconButton
 							aria-label='show 4 new mails'
 							color='inherit'
 						>
@@ -212,8 +226,16 @@ export default function MyContent() {
 							<Badge badgeContent={18} color='secondary'>
 								<NotificationsIcon />
 							</Badge>
-						</IconButton>
+						</IconButton> */}
 						<IconButton
+							aria-label='show 18 new notifications'
+							color='inherit'
+						>
+							<Badge badgeContent={countries} color='secondary'>
+								<EmojiFlagsIcon />
+							</Badge>
+						</IconButton>
+						{/* <IconButton
 							edge='end'
 							aria-label='account of current user'
 							aria-controls={menuId}
@@ -222,7 +244,7 @@ export default function MyContent() {
 							color='inherit'
 						>
 							<AccountCircle />
-						</IconButton>
+						</IconButton> */}
 					</div>
 					<div className={classes.sectionMobile}>
 						<IconButton
