@@ -14,6 +14,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import ComboCountries from './ComboCountries';
+import ComboCountries2 from './ComboCountries2';
 
 const useStyles = makeStyles((theme) => ({
 	grow: {
@@ -194,6 +196,7 @@ export default function MyContent() {
 					</div>
 					<div className={classes.grow} />
 					<div className={classes.sectionDesktop}>
+						<ComboCountries />
 						<IconButton
 							aria-label='show 4 new mails'
 							color='inherit'
