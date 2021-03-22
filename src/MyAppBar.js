@@ -81,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function MyAppBar() {
+export default function MyAppBar({ handleCountryChange }) {
 	const [countries, setTotalCountries] = React.useState(0);
 	const classes = useStyles();
 	const [anchorEl, setAnchorEl] = React.useState(null);
@@ -110,6 +110,7 @@ export default function MyAppBar() {
 	const handleChange = (country) => {
 		console.log('MyAppBar chọn: ', country);
 		// this.setState({ selectedCountry: country });
+		handleCountryChange(country);
 	};
 
 	const totalCountries = (totalCountries) => {

@@ -48,10 +48,14 @@ class ComboCountries extends React.Component {
 				(data) => {
 					// console.log('result', data);
 					let id = 1;
-					const dataWithId = data.map((x) =>
+					let dataWithId = data.map((x) =>
 						Object.assign({}, x, { id: id++ })
 					);
 					// console.log('dataWithId', dataWithId);
+					dataWithId = dataWithId.sort((a, b) =>
+						a.Country < b.Country ? -1 : 1
+					);
+					// console.log('sorted dataWithId', dataWithId);
 					this.setState({ rows: dataWithId });
 					this.props.totalCountries(dataWithId.length);
 				},

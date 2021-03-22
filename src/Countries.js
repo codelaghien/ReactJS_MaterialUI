@@ -1,25 +1,39 @@
 import React from 'react';
 // import './Countries.css';
 import { DataGrid } from '@material-ui/data-grid';
+// import Moment from 'react-moment';
+import moment from 'moment';
 
 class Countries extends React.Component {
 	constructor(props) {
 		super(props);
 		const columns = [
-			{ field: 'Country', headerName: 'Country', width: 250 },
-			{ field: 'NewConfirmed', headerName: 'NewConfirmed', width: 250 },
+			{ field: 'Country', headerName: 'Đất nước', width: 250 },
+			{ field: 'NewConfirmed', headerName: 'NewConfirmed', width: 150 },
 			{
 				field: 'TotalConfirmed',
 				headerName: 'TotalConfirmed',
 				width: 150,
 			},
+			{ field: 'NewDeaths', headerName: 'NewDeaths', width: 150 },
+			{ field: 'formatDate', headerName: 'Ngày', width: 250 },
 		];
-		this.state = { columns: columns, rows: [] };
+		this.state = {
+			columns: columns,
+			rows: [],
+			displayData: [],
+			selectedCountry: props.selectedCountry,
+		};
 	}
 
-	changeSelectedCountry = (event) => {
-		//
-	};
+	static getDerivedStateFromProps(props, state) {
+		const displayData = state.rows.filter(
+			(data) =>
+				data.Country === props.selectedCountry ||
+				props.selectedCountry === ''
+		);
+		return { displayData: displayData };
+	}
 
 	componentDidMount() {
 		this.getData();
@@ -31,13 +45,26 @@ class Countries extends React.Component {
 			.then((res) => res.json())
 			.then(
 				(data) => {
-					console.log('data', data.Countries);
+					// console.log('data', data.Countries);
 					let id = 1;
 					const dataWithId = data.Countries.map((x) =>
-						Object.assign({}, x, { id: id++ })
+						Object.assign(
+							{},
+							x,
+							{ id: id++ },
+							{
+								formatDate:
+									'Ngày ' +
+									moment(x.Date).format('DD/MM/YYYY'),
+							}
+						)
 					);
 					// console.log('dataWithId', dataWithId);
-					this.setState({ rows: dataWithId });
+					const displayData = [...dataWithId];
+					this.setState({
+						rows: dataWithId,
+						displayData: displayData,
+					});
 				},
 				(error) => {
 					console.log('error', error);
@@ -48,7 +75,10 @@ class Countries extends React.Component {
 	render() {
 		return (
 			<div style={{ height: 700, width: '100%' }}>
-				<DataGrid rows={this.state.rows} columns={this.state.columns} />
+				<DataGrid
+					rows={this.state.displayData}
+					columns={this.state.columns}
+				/>
 			</div>
 		);
 	}
