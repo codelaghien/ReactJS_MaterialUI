@@ -1,32 +1,47 @@
 import React from 'react';
-// import TextField from '@material-ui/core/TextField';
-// import Autocomplete from '@material-ui/lab/Autocomplete';
+// import style from './ComboClasses.css';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 class ComboClasses extends React.Component {
 	constructor(props) {
 		super(props);
+		const columns = [{ field: 'Class', headerName: 'Class', width: 250 }];
 		this.state = {
+			columns: columns,
+			data: [
+				{ year: 2020, name: 'Lớp 12 A1' },
+				{ year: 2021, name: 'Lớp 11 A8' },
+			],
 			selectedClass: '',
 		};
 	}
 
+	handleChange = (event) => {
+		console.log('chọn lớp: ', event.target.value);
+		this.setState({ selectedClass: event.target.value });
+	};
+
 	render() {
 		return (
 			<div style={{ minWidth: 200 }}>
-				Hello
-				{/* <Autocomplete
-					id='combo-box-demo'
-					options={[]}
-					getOptionLabel={(option) => option.title}
-					style={{ width: 300 }}
+				<Autocomplete
+					id='combo-box-lop'
+					size='small'
+					options={this.state.data}
+					getOptionLabel={(option) => option.name}
+					style={{
+						background: 'white',
+					}}
 					renderInput={(params) => (
 						<TextField
 							{...params}
-							label='Combo box'
+							label=''
 							variant='outlined'
+							placeholder='Chọn lớp'
 						/>
 					)}
-				/> */}
+				/>
 			</div>
 		);
 	}
