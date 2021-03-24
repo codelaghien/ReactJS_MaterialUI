@@ -4,40 +4,36 @@ import { DataGrid } from '@material-ui/data-grid';
 // import Moment from 'react-moment';
 import moment from 'moment';
 
-class Countries extends React.Component {
+class MyClass extends React.Component {
 	constructor(props) {
 		super(props);
 		const columns = [
-			{ field: 'Country', headerName: 'Đất nước', width: 250 },
-			{ field: 'NewConfirmed', headerName: 'NewConfirmed', width: 150 },
 			{
-				field: 'TotalConfirmed',
-				headerName: 'TotalConfirmed',
+				field: 'first',
+				headerName: 'First Name',
 				width: 150,
 			},
-			{ field: 'NewDeaths', headerName: 'NewDeaths', width: 150 },
-			{ field: 'formatDate', headerName: 'Ngày', width: 250 },
 		];
+		console.log('props.students', props.students);
 		this.state = {
 			columns: columns,
-			rows: [],
-			displayData: [],
-			selectedCountry: props.selectedCountry,
+			students: props.students,
+			selectedClass: props.selectedClass,
 		};
 	}
 
-	static getDerivedStateFromProps(props, state) {
-		const displayData = state.rows.filter(
-			(data) =>
-				data.Country === props.selectedCountry ||
-				props.selectedCountry === ''
-		);
-		return { displayData: displayData };
-	}
+	// static getDerivedStateFromProps(props, state) {
+	// 	const displayData = state.rows.filter(
+	// 		(data) =>
+	// 			data.Country === props.selectedCountry ||
+	// 			props.selectedCountry === ''
+	// 	);
+	// 	return { displayData: displayData };
+	// }
 
-	componentDidMount() {
-		this.getData();
-	}
+	// componentDidMount() {
+	// 	this.getData();
+	// }
 
 	getData = () => {
 		console.log('getData');
@@ -76,7 +72,7 @@ class Countries extends React.Component {
 		return (
 			<div style={{ height: 700, width: '100%' }}>
 				<DataGrid
-					rows={this.state.displayData}
+					rows={this.state.students}
 					columns={this.state.columns}
 				/>
 			</div>
@@ -84,4 +80,4 @@ class Countries extends React.Component {
 	}
 }
 
-export default Countries;
+export default MyClass;

@@ -13,9 +13,10 @@ import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 // import NotificationsIcon from '@material-ui/icons/Notifications';
-import EmojiFlagsIcon from '@material-ui/icons/EmojiFlags';
+// import EmojiFlagsIcon from '@material-ui/icons/EmojiFlags';
+import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import ComboCountries from './ComboCountries';
+import ComboClasses from './ComboClasses';
 
 const useStyles = makeStyles((theme) => ({
 	grow: {
@@ -81,9 +82,14 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function MyAppBar({ handleCountryChange }) {
-	const [countries, setTotalCountries] = React.useState(0);
-	const classes = useStyles();
+export default function MyAppBar({
+	classes,
+	students,
+	handleSelectClassChange,
+}) {
+	console.log('MyAppBar', classes, students);
+	const [selectedClass, handleClassChange] = React.useState(0);
+	const classesStyle = useStyles();
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -107,15 +113,9 @@ export default function MyAppBar({ handleCountryChange }) {
 		setMobileMoreAnchorEl(event.currentTarget);
 	};
 
-	const handleChange = (country) => {
-		console.log('MyAppBar chọn: ', country);
-		// this.setState({ selectedCountry: country });
-		handleCountryChange(country);
-	};
-
-	const totalCountries = (totalCountries) => {
-		setTotalCountries(totalCountries);
-		console.log('MyAppBar totalCountries: ', totalCountries);
+	const handleChange = (selectedClass) => {
+		console.log('MyAppBar chọn: ', selectedClass);
+		handleClassChange(selectedClass);
 	};
 
 	const menuId = 'primary-search-account-menu';
@@ -159,7 +159,7 @@ export default function MyAppBar({ handleCountryChange }) {
 					color='inherit'
 				>
 					<Badge badgeContent={11} color='secondary'>
-						<EmojiFlagsIcon />
+						<PeopleAltIcon />
 					</Badge>
 				</IconButton>
 				<p>Notifications</p>
@@ -179,39 +179,40 @@ export default function MyAppBar({ handleCountryChange }) {
 	);
 
 	return (
-		<div className={classes.grow}>
+		<div className={classesStyle.grow}>
 			<AppBar position='static'>
 				<Toolbar>
 					<IconButton
 						edge='start'
-						className={classes.menuButton}
+						className={classesStyle.menuButton}
 						color='inherit'
 						aria-label='open drawer'
 					>
 						<MenuIcon />
 					</IconButton>
-					<Typography className={classes.title} variant='h6' noWrap>
+					<Typography
+						className={classesStyle.title}
+						variant='h6'
+						noWrap
+					>
 						Học Material-UI
 					</Typography>
-					<div className={classes.search}>
-						<div className={classes.searchIcon}>
+					<div className={classesStyle.search}>
+						<div className={classesStyle.searchIcon}>
 							<SearchIcon />
 						</div>
 						<InputBase
 							placeholder='Tìm …'
 							classes={{
-								root: classes.inputRoot,
-								input: classes.inputInput,
+								root: classesStyle.inputRoot,
+								input: classesStyle.inputInput,
 							}}
 							inputProps={{ 'aria-label': 'search' }}
 						/>
 					</div>
-					<div className={classes.grow} />
-					<div className={classes.sectionDesktop}>
-						<ComboCountries
-							handleChange={handleChange}
-							totalCountries={totalCountries}
-						/>
+					<div className={classesStyle.grow} />
+					<div className={classesStyle.sectionDesktop}>
+						<ComboClasses handleChange={handleChange} />
 						{/* <IconButton
 							aria-label='show 4 new mails'
 							color='inherit'
@@ -232,8 +233,11 @@ export default function MyAppBar({ handleCountryChange }) {
 							aria-label='show 18 new notifications'
 							color='inherit'
 						>
-							<Badge badgeContent={countries} color='secondary'>
-								<EmojiFlagsIcon />
+							<Badge
+								badgeContent={selectedClass}
+								color='secondary'
+							>
+								<PeopleAltIcon />
 							</Badge>
 						</IconButton>
 						{/* <IconButton
@@ -247,7 +251,7 @@ export default function MyAppBar({ handleCountryChange }) {
 							<AccountCircle />
 						</IconButton> */}
 					</div>
-					<div className={classes.sectionMobile}>
+					<div className={classesStyle.sectionMobile}>
 						<IconButton
 							aria-label='show more'
 							aria-controls={mobileMenuId}
