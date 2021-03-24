@@ -111,7 +111,7 @@ export default function MyAppBar({ classes, handleSelectClassChange }) {
 
 	const handleChange = (selectedClass) => {
 		console.log('MyAppBar chọn: ', selectedClass);
-		handleClassChange(selectedClass);
+		// handleClassChange(selectedClass);
 	};
 
 	const menuId = 'primary-search-account-menu';

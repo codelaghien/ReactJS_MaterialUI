@@ -6,9 +6,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 class ComboClasses extends React.Component {
 	constructor(props) {
 		super(props);
-		const columns = [{ field: 'Class', headerName: 'Class', width: 250 }];
 		this.state = {
-			columns: columns,
 			data: [
 				{ year: 2020, name: 'Lớp 12 A1' },
 				{ year: 2021, name: 'Lớp 11 A8' },
@@ -17,9 +15,10 @@ class ComboClasses extends React.Component {
 		};
 	}
 
-	handleChange = (event) => {
-		console.log('chọn lớp: ', event.target.value);
-		this.setState({ selectedClass: event.target.value });
+	handleChange = (event, value) => {
+		console.log('ComboClasses chọn lớp: ', value);
+		this.setState({ selectedClass: value?.name });
+		this.props.handleChange(value?.name);
 	};
 
 	render() {
@@ -30,6 +29,7 @@ class ComboClasses extends React.Component {
 					size='small'
 					options={this.state.data}
 					getOptionLabel={(option) => option.name}
+					onChange={this.handleChange}
 					style={{
 						background: 'white',
 					}}

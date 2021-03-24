@@ -22,17 +22,7 @@ class App extends React.Component {
 					handleClassChange={this.handleClassChange}
 				/>
 				<br />
-				<MyClass
-					key='1'
-					students={[
-						{
-							id: 1,
-							title: 'Mr',
-							first: 'Christopher',
-							last: 'Edwards',
-						},
-					]}
-				/>
+				<MyClass />
 			</div>
 		);
 	}
