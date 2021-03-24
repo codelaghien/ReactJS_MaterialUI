@@ -18,8 +18,7 @@ class App extends React.Component {
 		return (
 			<div>
 				<MyAppBar
-					classes={[]}
-					students={[]}
+					classes={[{ id: 1, value: 'một' }]}
 					handleClassChange={this.handleClassChange}
 				/>
 				<br />

@@ -82,12 +82,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function MyAppBar({
-	classes,
-	students,
-	handleSelectClassChange,
-}) {
-	console.log('MyAppBar', classes, students);
+export default function MyAppBar({ classes, handleSelectClassChange }) {
+	console.log('MyAppBar', classes);
 	const [selectedClass, handleClassChange] = React.useState(0);
 	const classesStyle = useStyles();
 	const [anchorEl, setAnchorEl] = React.useState(null);
