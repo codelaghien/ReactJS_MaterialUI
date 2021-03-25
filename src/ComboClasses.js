@@ -16,7 +16,7 @@ class ComboClasses extends React.Component {
 	}
 
 	handleChange = (event, value) => {
-		console.log('ComboClasses chọn lớp: ', value);
+		// console.log('ComboClasses chọn lớp: ', value);
 		this.setState({ selectedClass: value?.name });
 		this.props.handleChange(value?.name);
 	};

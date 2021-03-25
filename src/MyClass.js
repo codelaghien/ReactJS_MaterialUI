@@ -42,55 +42,32 @@ class MyClass extends React.Component {
 		this.state = {
 			columns: columns,
 			students: [],
+			newStudent: [],
 			selectedClass: props.selectedClass,
 		};
 	}
 
-	// static getDerivedStateFromProps(props, state) {
-	// 	const displayData = state.rows.filter(
-	// 		(data) =>
-	// 			data.Country === props.selectedCountry ||
-	// 			props.selectedCountry === ''
-	// 	);
-	// 	return { displayData: displayData };
-	// }
-
-	componentDidMount() {
-		this.getData();
+	static getDerivedStateFromProps(props, state) {
+		console.log(
+			'MyClass getDerivedStateFromProps',
+			props.className,
+			props.newStudent
+		);
+		return { selectedClass: props.className, newStudent: props.newStudent };
 	}
 
-	getData = () => {
-		console.log('getData');
-		fetch('https://randomuser.me/api/?results=5')
-			.then((res) => res.json())
-			.then(
-				(data) => {
-					console.log('data', data.results);
-					let id = 1;
-					const dataWithId = data.results.map((record) => {
-						return {
-							id: id++,
-							firstName: record.name.first,
-							lastName: record.name.last,
-							country: record.location.country,
-							phone: record.phone,
-							dob: moment(record.dob.date).format('DD/MM/YYYY'),
-							picture: record.picture.thumbnail,
-						};
-					});
-					console.log('dataWithId', dataWithId);
-					this.setState({
-						students: dataWithId,
-					});
-				},
-				(error) => {
-					console.log('error', error);
-				}
-			);
-	};
+	// componentDidMount() {
+	// 	// this.getData();
+	// }
 
 	render() {
+		console.log('MyClass render', this.state.selectedClass);
 		const displayStudents = [...this.state.students];
+		// const displayData = state.students.filter(
+		// 	(data) =>
+		// 		data.class === props.selectedClass ||
+		// 		props.selectedClass === ''
+		// );
 		return (
 			<div style={{ height: 700, width: '100%' }}>
 				<DataGrid rows={displayStudents} columns={this.state.columns} />

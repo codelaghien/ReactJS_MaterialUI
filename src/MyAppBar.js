@@ -14,6 +14,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 // import NotificationsIcon from '@material-ui/icons/Notifications';
 // import EmojiFlagsIcon from '@material-ui/icons/EmojiFlags';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import ComboClasses from './ComboClasses';
@@ -82,7 +83,11 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-export default function MyAppBar({ classes, handleSelectClassChange }) {
+export default function MyAppBar({
+	classes,
+	handleSelectClassChange,
+	handleAddStudent,
+}) {
 	console.log('MyAppBar', classes);
 	const [selectedClass, handleClassChange] = React.useState(0);
 	const classesStyle = useStyles();
@@ -110,8 +115,14 @@ export default function MyAppBar({ classes, handleSelectClassChange }) {
 	};
 
 	const handleChange = (selectedClass) => {
-		console.log('MyAppBar chọn: ', selectedClass);
-		// handleClassChange(selectedClass);
+		// console.log('MyAppBar chọn: ', selectedClass);
+		handleClassChange(selectedClass);
+		handleSelectClassChange(selectedClass);
+	};
+
+	const addStudent = () => {
+		// console.log('MyAppBar addStudent');
+		handleAddStudent();
 	};
 
 	const menuId = 'primary-search-account-menu';
@@ -228,11 +239,15 @@ export default function MyAppBar({ classes, handleSelectClassChange }) {
 						<IconButton
 							aria-label='show 18 new notifications'
 							color='inherit'
+							onClick={addStudent}
 						>
-							<Badge
-								badgeContent={selectedClass}
-								color='secondary'
-							>
+							<PersonAddIcon />
+						</IconButton>
+						<IconButton
+							aria-label='show 18 new notifications'
+							color='inherit'
+						>
+							<Badge badgeContent='0' color='secondary'>
 								<PeopleAltIcon />
 							</Badge>
 						</IconButton>
