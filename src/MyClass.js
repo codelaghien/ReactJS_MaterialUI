@@ -3,6 +3,13 @@ import React from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteForIcon from '@material-ui/icons/DeleteForever';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Snackbar from '@material-ui/core/Snackbar';
 // import Moment from 'react-moment';
 // import moment from 'moment';
 
@@ -63,6 +70,12 @@ class MyClass extends React.Component {
 			columns: columns,
 			students: [],
 			selectedClass: props.selectedClass,
+			openConfirmation: false,
+			editID: null,
+			totalStudents: 0,
+			maxID: 1,
+			openSnackbar: false,
+			snackbarInfo: '',
 		};
 	}
 
@@ -86,25 +99,34 @@ class MyClass extends React.Component {
 			const students = state.students;
 			const newStudent = props.newStudent;
 
-			newStudent.id = students.length + 1;
+			let currentID = state.maxID;
+			newStudent.id = currentID;
 			newStudent.className = props.className;
 			newStudent.actions = newStudent.id;
 
-			// console.log('MyClass newStudent', newStudent);
+			// console.log('MyClass newStudent', newStudent, state.maxID);
 
 			students.push(newStudent);
 			++totalStudents;
+			// console.log('MyClass newStudent after', newStudent, students);
 			// console.log('MyClass handleTotalStudents', totalStudents);
 			props.handleTotalStudents(totalStudents);
 			return {
 				selectedClass: props.className,
 				students: students,
+				totalStudents: totalStudents,
+				maxID: ++currentID,
+				openSnackbar: true,
+				snackbarInfo: 'Đã thêm sinh viên mới !',
 			};
 		} else {
 			if (props.className !== state.selectedClass) {
 				props.handleTotalStudents(totalStudents);
 			}
-			return { selectedClass: props.className };
+			return {
+				selectedClass: props.className,
+				totalStudents: totalStudents,
+			};
 		}
 	}
 
@@ -113,7 +135,32 @@ class MyClass extends React.Component {
 	};
 
 	deleteRow = (id) => {
-		console.log('deleteRow', id);
+		// console.log('deleteRow', id);
+		// alert('xoá');
+		this.setState({ openConfirmation: true, editID: id });
+	};
+
+	handleCloseConfirmation = (yes) => {
+		// console.log('handleCloseConfirmation', yes);
+		this.setState({ openConfirmation: false });
+		if (yes) {
+			let students = this.state.students;
+			students = students.filter((data) => data.id !== this.state.editID);
+			const totalStudents = this.state.totalStudents - 1;
+			// console.log('test', students);
+			this.setState({ students: students, totalStudents: totalStudents });
+			this.props.handleTotalStudents(totalStudents);
+			this.setState({
+				openSnackbar: true,
+				snackbarInfo: 'Xóa thành công !',
+			});
+		}
+	};
+
+	handleSnackbarClose = () => {
+		this.setState({
+			openSnackbar: false,
+		});
 	};
 
 	// componentDidUpdate() {
@@ -135,6 +182,42 @@ class MyClass extends React.Component {
 		return (
 			<div style={{ height: 700, width: '100%' }}>
 				<DataGrid rows={displayStudents} columns={this.state.columns} />
+				<Dialog
+					open={this.state.openConfirmation}
+					onClose={() => this.handleCloseConfirmation(false)}
+					aria-labelledby='alert-dialog-title'
+					aria-describedby='alert-dialog-description'
+				>
+					<DialogTitle id='alert-dialog-title'>
+						'Bạn có chắc là muốn xóa sinh viên có ID ={' '}
+						{this.state.editID} ?'
+					</DialogTitle>
+					<DialogContent>
+						<DialogContentText id='alert-dialog-description'></DialogContentText>
+					</DialogContent>
+					<DialogActions>
+						<Button
+							onClick={() => this.handleCloseConfirmation(false)}
+							color='primary'
+						>
+							Hủy
+						</Button>
+						<Button
+							onClick={() => this.handleCloseConfirmation(true)}
+							color='primary'
+							autoFocus
+						>
+							Đồng ý
+						</Button>
+					</DialogActions>
+				</Dialog>
+				<Snackbar
+					anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+					open={this.state.openSnackbar}
+					onClose={this.handleSnackbarClose}
+					message={this.state.snackbarInfo}
+					key={{ vertical: 'bottom', horizontal: 'right' }}
+				/>
 			</div>
 		);
 	}
