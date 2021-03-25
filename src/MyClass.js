@@ -1,13 +1,33 @@
 import React from 'react';
 // import './Countries.css';
 import { DataGrid } from '@material-ui/data-grid';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteForIcon from '@material-ui/icons/DeleteForever';
 // import Moment from 'react-moment';
-import moment from 'moment';
+// import moment from 'moment';
 
 class MyClass extends React.Component {
 	constructor(props) {
 		super(props);
 		const columns = [
+			{
+				field: 'actions',
+				headerName: 'Actions',
+				width: 100,
+				renderCell: (params) => (
+					<div style={{ marginTop: 10, cursor: 'pointer' }}>
+						<EditIcon onClick={() => this.editRow(params.value)} />
+						<DeleteForIcon
+							onClick={() => this.deleteRow(params.value)}
+						/>
+					</div>
+				),
+			},
+			{
+				field: 'id',
+				headerName: 'ID',
+				width: 70,
+			},
 			{
 				field: 'firstName',
 				headerName: 'Tên',
@@ -65,8 +85,11 @@ class MyClass extends React.Component {
 		if (props.className && props.newStudent) {
 			const students = state.students;
 			const newStudent = props.newStudent;
+
 			newStudent.id = students.length + 1;
 			newStudent.className = props.className;
+			newStudent.actions = newStudent.id;
+
 			// console.log('MyClass newStudent', newStudent);
 
 			students.push(newStudent);
@@ -85,6 +108,14 @@ class MyClass extends React.Component {
 		}
 	}
 
+	editRow = (id) => {
+		console.log('editRow', id);
+	};
+
+	deleteRow = (id) => {
+		console.log('deleteRow', id);
+	};
+
 	// componentDidUpdate() {
 	// 	console.log('componentDidUpdate');
 	// 	let totalStudents = MyClass.calculateTotalStudents(
@@ -95,7 +126,7 @@ class MyClass extends React.Component {
 	// }
 
 	render() {
-		console.log('MyClass render', this.state.selectedClass);
+		// console.log('MyClass render', this.state.selectedClass);
 		let displayStudents = [...this.state.students];
 		displayStudents = displayStudents.filter(
 			(data) => data.className === this.state.selectedClass
@@ -103,11 +134,7 @@ class MyClass extends React.Component {
 
 		return (
 			<div style={{ height: 700, width: '100%' }}>
-				<DataGrid
-					key='1'
-					rows={displayStudents}
-					columns={this.state.columns}
-				/>
+				<DataGrid rows={displayStudents} columns={this.state.columns} />
 			</div>
 		);
 	}

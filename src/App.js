@@ -15,7 +15,7 @@ class App extends React.Component {
 	}
 
 	handleClassChange = (selectedClass) => {
-		console.log('App chọn: ', selectedClass);
+		// console.log('App chọn: ', selectedClass);
 		this.setState({
 			selectedClass: selectedClass,
 			newStudent: null,
@@ -29,7 +29,7 @@ class App extends React.Component {
 	};
 
 	handleTotalStudents = (totalStudents) => {
-		console.log('handleTotalStudents: ', totalStudents);
+		// console.log('handleTotalStudents: ', totalStudents);
 		this.setState({ totalStudents: totalStudents, newStudent: null });
 	};
 

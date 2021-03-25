@@ -88,7 +88,7 @@ export default function MyAppBar({
 	handleAddStudent,
 	totalStudents,
 }) {
-	console.log('MyAppBar', totalStudents);
+	// console.log('MyAppBar', totalStudents);
 	const [selectedClass, selectClassChange] = React.useState('');
 	const classesStyle = useStyles();
 	const [anchorEl, setAnchorEl] = React.useState(null);
@@ -115,7 +115,7 @@ export default function MyAppBar({
 	};
 
 	const handleChange = (selectedClass) => {
-		console.log('MyAppBar chọn: ', selectedClass);
+		// console.log('MyAppBar chọn: ', selectedClass);
 		selectClassChange(selectedClass);
 		handleSelectClassChange(selectedClass);
 	};
