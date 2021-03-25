@@ -84,12 +84,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function MyAppBar({
-	classes,
 	handleSelectClassChange,
 	handleAddStudent,
+	totalStudents,
 }) {
-	console.log('MyAppBar', classes);
-	const [selectedClass, handleClassChange] = React.useState(0);
+	console.log('MyAppBar', totalStudents);
+	const [selectedClass, selectClassChange] = React.useState('');
 	const classesStyle = useStyles();
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -115,8 +115,8 @@ export default function MyAppBar({
 	};
 
 	const handleChange = (selectedClass) => {
-		// console.log('MyAppBar chọn: ', selectedClass);
-		handleClassChange(selectedClass);
+		console.log('MyAppBar chọn: ', selectedClass);
+		selectClassChange(selectedClass);
 		handleSelectClassChange(selectedClass);
 	};
 
@@ -240,6 +240,7 @@ export default function MyAppBar({
 							aria-label='show 18 new notifications'
 							color='inherit'
 							onClick={addStudent}
+							disabled={!selectedClass || selectedClass === ''}
 						>
 							<PersonAddIcon />
 						</IconButton>
@@ -247,7 +248,10 @@ export default function MyAppBar({
 							aria-label='show 18 new notifications'
 							color='inherit'
 						>
-							<Badge badgeContent='0' color='secondary'>
+							<Badge
+								badgeContent={totalStudents}
+								color='secondary'
+							>
 								<PeopleAltIcon />
 							</Badge>
 						</IconButton>

@@ -47,27 +47,51 @@ class MyClass extends React.Component {
 	}
 
 	static getDerivedStateFromProps(props, state) {
-		console.log(
-			'MyClass getDerivedStateFromProps',
-			props.className,
-			props.newStudent
-		);
+		// console.log(
+		// 	'MyClass getDerivedStateFromProps',
+		// 	props.className,
+		// 	props.newStudent
+		// );
+		let totalStudents = 0;
+		if (!props.className || props.className === '') {
+			totalStudents = state.students.length;
+		} else {
+			let displayStudents = [...state.students];
+			displayStudents = displayStudents.filter(
+				(data) => data.className === props.className
+			);
+			totalStudents = displayStudents.length;
+		}
 		if (props.className && props.newStudent) {
 			const students = state.students;
 			const newStudent = props.newStudent;
 			newStudent.id = students.length + 1;
 			newStudent.className = props.className;
-			console.log('MyClass newStudent', newStudent);
+			// console.log('MyClass newStudent', newStudent);
 
 			students.push(newStudent);
-			return { selectedClass: props.className, students: students };
+			++totalStudents;
+			// console.log('MyClass handleTotalStudents', totalStudents);
+			props.handleTotalStudents(totalStudents);
+			return {
+				selectedClass: props.className,
+				students: students,
+			};
 		} else {
+			if (props.className !== state.selectedClass) {
+				props.handleTotalStudents(totalStudents);
+			}
 			return { selectedClass: props.className };
 		}
 	}
 
-	// componentDidMount() {
-	// 	// this.getData();
+	// componentDidUpdate() {
+	// 	console.log('componentDidUpdate');
+	// 	let totalStudents = MyClass.calculateTotalStudents(
+	// 		this.state.selectedClass,
+	// 		this.state.students
+	// 	);
+	// 	this.props.handleTotalStudents(totalStudents);
 	// }
 
 	render() {
@@ -76,9 +100,14 @@ class MyClass extends React.Component {
 		displayStudents = displayStudents.filter(
 			(data) => data.className === this.state.selectedClass
 		);
+
 		return (
 			<div style={{ height: 700, width: '100%' }}>
-				<DataGrid rows={displayStudents} columns={this.state.columns} />
+				<DataGrid
+					key='1'
+					rows={displayStudents}
+					columns={this.state.columns}
+				/>
 			</div>
 		);
 	}

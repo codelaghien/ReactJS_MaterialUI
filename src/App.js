@@ -7,7 +7,11 @@ import moment from 'moment';
 class App extends React.Component {
 	constructor() {
 		super();
-		this.state = { selectedClass: '', addStudent: false };
+		this.state = {
+			selectedClass: '',
+			addStudent: false,
+			totalStudents: 0,
+		};
 	}
 
 	handleClassChange = (selectedClass) => {
@@ -20,8 +24,13 @@ class App extends React.Component {
 	};
 
 	handleAddStudent = () => {
-		console.log('App thêm sinh viên vào lớp: ', this.state.selectedClass);
+		// console.log('App thêm sinh viên vào lớp: ', this.state.selectedClass);
 		this.addNewStudent();
+	};
+
+	handleTotalStudents = (totalStudents) => {
+		console.log('handleTotalStudents: ', totalStudents);
+		this.setState({ totalStudents: totalStudents, newStudent: null });
 	};
 
 	addNewStudent = () => {
@@ -59,14 +68,15 @@ class App extends React.Component {
 		return (
 			<div>
 				<MyAppBar
-					classes={[{ id: 1, value: 'một' }]}
 					handleSelectClassChange={this.handleClassChange}
 					handleAddStudent={this.handleAddStudent}
+					totalStudents={this.state.totalStudents}
 				/>
 				<br />
 				<MyClass
 					newStudent={this.state.newStudent}
 					className={this.state.selectedClass}
+					handleTotalStudents={this.handleTotalStudents}
 				/>
 			</div>
 		);
