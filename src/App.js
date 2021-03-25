@@ -14,7 +14,7 @@ class App extends React.Component {
 		console.log('App chọn: ', selectedClass);
 		this.setState({
 			selectedClass: selectedClass,
-			newStudent: [],
+			newStudent: null,
 			className: this.state.selectedClass,
 		});
 	};
@@ -45,7 +45,7 @@ class App extends React.Component {
 					});
 					// console.log('dataWithId', dataWithId);
 					this.setState({
-						newStudent: dataWithId,
+						newStudent: dataWithId[0],
 						className: this.state.selectedClass,
 					});
 				},

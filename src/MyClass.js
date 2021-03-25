@@ -42,7 +42,6 @@ class MyClass extends React.Component {
 		this.state = {
 			columns: columns,
 			students: [],
-			newStudent: [],
 			selectedClass: props.selectedClass,
 		};
 	}
@@ -53,7 +52,18 @@ class MyClass extends React.Component {
 			props.className,
 			props.newStudent
 		);
-		return { selectedClass: props.className, newStudent: props.newStudent };
+		if (props.className && props.newStudent) {
+			const students = state.students;
+			const newStudent = props.newStudent;
+			newStudent.id = students.length + 1;
+			newStudent.className = props.className;
+			console.log('MyClass newStudent', newStudent);
+
+			students.push(newStudent);
+			return { selectedClass: props.className, students: students };
+		} else {
+			return { selectedClass: props.className };
+		}
 	}
 
 	// componentDidMount() {
@@ -62,12 +72,10 @@ class MyClass extends React.Component {
 
 	render() {
 		console.log('MyClass render', this.state.selectedClass);
-		const displayStudents = [...this.state.students];
-		// const displayData = state.students.filter(
-		// 	(data) =>
-		// 		data.class === props.selectedClass ||
-		// 		props.selectedClass === ''
-		// );
+		let displayStudents = [...this.state.students];
+		displayStudents = displayStudents.filter(
+			(data) => data.className === this.state.selectedClass
+		);
 		return (
 			<div style={{ height: 700, width: '100%' }}>
 				<DataGrid rows={displayStudents} columns={this.state.columns} />
