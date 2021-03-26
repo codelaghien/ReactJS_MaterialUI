@@ -4,6 +4,7 @@ import { DataGrid } from '@material-ui/data-grid';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteForIcon from '@material-ui/icons/DeleteForever';
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -73,7 +74,9 @@ class MyClass extends React.Component {
 			students: [],
 			selectedClass: props.selectedClass,
 			openConfirmation: false,
+			openEditor: false,
 			editStudent: null,
+			editedStudent: null,
 			totalStudents: 0,
 			maxID: 1,
 			openSnackbar: false,
@@ -135,7 +138,19 @@ class MyClass extends React.Component {
 	}
 
 	editRow = (id) => {
-		console.log('editRow', id);
+		// console.log('editRow', id);
+		const editStudent = this.state.students.find(
+			(student) => student.id === id
+		);
+		// console.log('editRow', id, editStudent);
+		// console.log('editRow', id, { ...editStudent });
+		if (editStudent) {
+			this.setState({
+				openEditor: true,
+				editStudent: editStudent,
+				editedStudent: { ...editStudent },
+			});
+		}
 	};
 
 	deleteRow = (id) => {
@@ -165,6 +180,60 @@ class MyClass extends React.Component {
 				severity: 'success',
 			});
 		}
+	};
+
+	handleCloseEditor = (yes) => {
+		// console.log('handleCloseEditor', yes);
+		this.setState({ openEditor: false });
+		if (yes) {
+			// console.log(
+			// 	'handleCloseEditor: editStudent',
+			// 	this.state.editStudent
+			// );
+			// console.log(
+			// 	'handleCloseEditor: editedStudent',
+			// 	this.state.editedStudent
+			// );
+			let students = this.state.students;
+			students = students.filter(
+				(data) => data.id !== this.state.editedStudent.id
+			);
+			students.push(this.state.editedStudent);
+			this.setState({
+				students: students,
+				editStudent: null,
+				editedStudent: null,
+				openSnackbar: true,
+				snackbarInfo: 'Soạn thành công !',
+				severity: 'success',
+			});
+		} else {
+			this.setState({
+				editStudent: null,
+				editedStudent: null,
+			});
+		}
+	};
+
+	setFirstName = (event) => {
+		// console.log('setFirstName', event.target.value);
+		const editedStudent = this.state.editedStudent;
+		editedStudent.firstName = event.target.value;
+		this.setState(editedStudent);
+	};
+
+	setLastName = (event) => {
+		// console.log('setLastName', event.target.value);
+		const editedStudent = this.state.editedStudent;
+		editedStudent.lastName = event.target.value;
+		this.setState(editedStudent);
+	};
+
+	setCountry = (event) => {
+		// console.log('setCountry', event.target.value);
+		const editedStudent = this.state.editedStudent;
+		editedStudent.country = event.target.value;
+		this.setState(editedStudent);
 	};
 
 	handleSnackbarClose = () => {
@@ -224,6 +293,59 @@ class MyClass extends React.Component {
 							autoFocus
 						>
 							Đồng ý
+						</Button>
+					</DialogActions>
+				</Dialog>
+				<Dialog
+					open={this.state.openEditor}
+					onClose={this.state.handleCloseEditor}
+					aria-labelledby='form-dialog-title'
+				>
+					<DialogTitle id='form-dialog-title'>
+						Soạn sinh viên
+					</DialogTitle>
+					<DialogContent>
+						<TextField
+							autoFocus
+							margin='dense'
+							id='firstName'
+							onChange={this.setFirstName}
+							label='Tên'
+							type='text'
+							defaultValue={this.state.editStudent?.firstName}
+							fullWidth
+						/>
+						<TextField
+							margin='dense'
+							id='lastName'
+							onChange={this.setLastName}
+							label='Họ'
+							type='text'
+							defaultValue={this.state.editStudent?.lastName}
+							fullWidth
+						/>
+						<TextField
+							margin='dense'
+							id='country'
+							onChange={this.setCountry}
+							label='Đất nước'
+							type='text'
+							defaultValue={this.state.editStudent?.country}
+							fullWidth
+						/>
+					</DialogContent>
+					<DialogActions>
+						<Button
+							onClick={() => this.handleCloseEditor(false)}
+							color='primary'
+						>
+							Hủy
+						</Button>
+						<Button
+							onClick={() => this.handleCloseEditor(true)}
+							color='primary'
+						>
+							Lưu
 						</Button>
 					</DialogActions>
 				</Dialog>
