@@ -157,10 +157,13 @@ class MyClass extends React.Component {
 		const editStudent = this.state.students.find(
 			(student) => student.id === id
 		);
-		// console.log('deleteRow', id, editStudent);
+		console.log('deleteRow', id, editStudent);
 		// alert('xoá');
 		if (editStudent) {
-			this.setState({ openConfirmation: true, editStudent: editStudent });
+			this.setState({
+				openConfirmation: true,
+				editStudent: editStudent,
+			});
 		}
 	};
 
@@ -169,9 +172,11 @@ class MyClass extends React.Component {
 		this.setState({ openConfirmation: false });
 		if (yes) {
 			let students = this.state.students;
-			students = students.filter((data) => data.id !== this.state.editID);
+			students = students.filter(
+				(data) => data.id !== this.state.editStudent.id
+			);
 			const totalStudents = this.state.totalStudents - 1;
-			// console.log('test', students);
+			console.log('test', students);
 			this.setState({ students: students, totalStudents: totalStudents });
 			this.props.handleTotalStudents(totalStudents);
 			this.setState({
