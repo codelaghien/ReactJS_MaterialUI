@@ -157,7 +157,7 @@ class MyClass extends React.Component {
 		const editStudent = this.state.students.find(
 			(student) => student.id === id
 		);
-		console.log('deleteRow', id, editStudent);
+		// console.log('deleteRow', id, editStudent);
 		// alert('xoá');
 		if (editStudent) {
 			this.setState({
