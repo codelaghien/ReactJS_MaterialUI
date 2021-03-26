@@ -176,7 +176,7 @@ class MyClass extends React.Component {
 				(data) => data.id !== this.state.editStudent.id
 			);
 			const totalStudents = this.state.totalStudents - 1;
-			console.log('test', students);
+			// console.log('handleCloseConfirmation', students);
 			this.setState({ students: students, totalStudents: totalStudents });
 			this.props.handleTotalStudents(totalStudents);
 			this.setState({
