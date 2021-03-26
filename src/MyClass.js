@@ -10,6 +10,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Snackbar from '@material-ui/core/Snackbar';
+import Avatar from '@material-ui/core/Avatar';
+import MuiAlert from '@material-ui/lab/Alert';
 // import Moment from 'react-moment';
 // import moment from 'moment';
 
@@ -31,9 +33,14 @@ class MyClass extends React.Component {
 				),
 			},
 			{
-				field: 'id',
-				headerName: 'ID',
-				width: 70,
+				field: 'picture',
+				headerName: 'Avatar',
+				width: 100,
+				renderCell: (params) => (
+					<div>
+						<Avatar alt='' src={params.value} />
+					</div>
+				),
 			},
 			{
 				field: 'firstName',
@@ -60,22 +67,18 @@ class MyClass extends React.Component {
 				headerName: 'Ngày sinh',
 				width: 150,
 			},
-			{
-				field: 'picture',
-				headerName: 'Hình',
-				width: 150,
-			},
 		];
 		this.state = {
 			columns: columns,
 			students: [],
 			selectedClass: props.selectedClass,
 			openConfirmation: false,
-			editID: null,
+			editStudent: null,
 			totalStudents: 0,
 			maxID: 1,
 			openSnackbar: false,
 			snackbarInfo: '',
+			severity: 'success',
 		};
 	}
 
@@ -117,7 +120,8 @@ class MyClass extends React.Component {
 				totalStudents: totalStudents,
 				maxID: ++currentID,
 				openSnackbar: true,
-				snackbarInfo: 'Đã thêm sinh viên mới !',
+				snackbarInfo: 'Thêm sinh viên thành công !',
+				severity: 'success',
 			};
 		} else {
 			if (props.className !== state.selectedClass) {
@@ -135,9 +139,14 @@ class MyClass extends React.Component {
 	};
 
 	deleteRow = (id) => {
-		// console.log('deleteRow', id);
+		const editStudent = this.state.students.find(
+			(student) => student.id === id
+		);
+		// console.log('deleteRow', id, editStudent);
 		// alert('xoá');
-		this.setState({ openConfirmation: true, editID: id });
+		if (editStudent) {
+			this.setState({ openConfirmation: true, editStudent: editStudent });
+		}
 	};
 
 	handleCloseConfirmation = (yes) => {
@@ -153,6 +162,7 @@ class MyClass extends React.Component {
 			this.setState({
 				openSnackbar: true,
 				snackbarInfo: 'Xóa thành công !',
+				severity: 'success',
 			});
 		}
 	};
@@ -162,6 +172,10 @@ class MyClass extends React.Component {
 			openSnackbar: false,
 		});
 	};
+
+	// Alert = (props) => {
+	// 	return <MuiAlert elevation={6} variant='filled' {...props} />;
+	// };
 
 	// componentDidUpdate() {
 	// 	console.log('componentDidUpdate');
@@ -189,8 +203,10 @@ class MyClass extends React.Component {
 					aria-describedby='alert-dialog-description'
 				>
 					<DialogTitle id='alert-dialog-title'>
-						'Bạn có chắc là muốn xóa sinh viên có ID ={' '}
-						{this.state.editID} ?'
+						Bạn có chắc là muốn xóa sinh viên{' '}
+						{this.state.editStudent?.firstName}{' '}
+						{this.state.editStudent?.lastName} ?{' '}
+						<Avatar alt='' src={this.state.editStudent?.picture} />
 					</DialogTitle>
 					<DialogContent>
 						<DialogContentText id='alert-dialog-description'></DialogContentText>
@@ -215,9 +231,16 @@ class MyClass extends React.Component {
 					anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
 					open={this.state.openSnackbar}
 					onClose={this.handleSnackbarClose}
-					message={this.state.snackbarInfo}
 					key={{ vertical: 'bottom', horizontal: 'right' }}
-				/>
+				>
+					<MuiAlert
+						onClose={this.handleSnackbarClose}
+						severity={this.state.severity}
+						variant='filled'
+					>
+						{this.state.snackbarInfo}
+					</MuiAlert>
+				</Snackbar>
 			</div>
 		);
 	}
